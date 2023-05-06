@@ -1,28 +1,31 @@
-#include <bits/stdc++.h>
-using namespace std;
+#include <stdio.h>
+int max(int a, int b) { return (a > b) ? a : b; }
+ 
 
-int deno[] = { 1, 2, 5, 10, 20, 50, 100, 500, 1000 };
-int n = sizeof(deno) / sizeof(deno[0]);
-
-void findMin(int V)
+int knapSack(int W, int wt[], int val[], int n)
 {
-    vector<int> ans;
-
-    for (int i = n - 1; i >= 0; i--) {
-        while (V >= deno[i]) {
-            V -= deno[i];
-            ans.push_back(deno[i]);
-        }
-    }
-
-    for (int i = 0; i < ans.size(); i++)
-        cout << ans[i] << "  ";
+    
+    if (n == 0 || W == 0)
+        return 0;
+ 
+    
+    if (wt[n - 1] > W)
+        return knapSack(W, wt, val, n - 1);
+ 
+    
+    else
+        return max(
+            val[n - 1]
+                + knapSack(W - wt[n - 1], wt, val, n - 1),
+            knapSack(W, wt, val, n - 1));
 }
-
+ 
 int main()
 {
-    int n = 93;
-    cout << "Following is minimal number of change for " << n << " is ";
-    findMin(n);
+    int profit[] = { 60, 100, 120 };
+    int weight[] = { 10, 20, 30 };
+    int W = 50;
+    int n = sizeof(profit) / sizeof(profit[0]);
+    printf("%d", knapSack(W, weight, profit, n));
     return 0;
 }
